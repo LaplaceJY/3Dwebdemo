@@ -1,0 +1,1 @@
+model/Whole2024.glb filter=lfs diff=lfs merge=lfs -text
