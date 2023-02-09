@@ -20,9 +20,10 @@
         import * as THREE from "three";
         import { OrbitControls } from 'https://unpkg.com/three@0.149.0/examples/jsm/controls/OrbitControls.js';
         import { GLTFLoader } from 'https://unpkg.com/three@0.149.0/examples/jsm/loaders/GLTFLoader.js';
-        import { OBJLoader } from 'https://unpkg.com/three@0.149.0/examples/jsm/loaders/OBJLoader.js';
-        import { MTLLoader } from 'https://unpkg.com/three@0.149.0/examples/jsm/loaders/MTLLoader.js';
-
+        // import { OBJLoader } from 'https://unpkg.com/three@0.149.0/examples/jsm/loaders/OBJLoader.js';
+        // import { MTLLoader } from 'https://unpkg.com/three@0.149.0/examples/jsm/loaders/MTLLoader.js';
+        import { DRACOLoader } from 'https://unpkg.com/three@0.149.0/examples/jsm/loaders/DRACOLoader.js';
+        // import { LoadingManager } from'https://unpkg.com/three@0.149.0'
         //scene renderer
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
@@ -39,7 +40,17 @@
         //nice ambient light
         const ambientLight = new THREE.AmbientLight(0xffffff,1);
         scene.add(ambientLight);
-        
+
+        // // Ground
+		// 	const plane = new THREE.Mesh(
+		// 		new THREE.PlaneGeometry( 8, 8 ),
+		// 		new THREE.MeshPhongMaterial( { color: 0x999999, specular: 0x101010 } )
+		// 	);
+		// 	plane.rotation.x = - Math.PI / 2;
+		// 	plane.position.y = 0.03;
+		// 	plane.receiveShadow = true;
+		// 	scene.add( plane );
+
         // //a nice point light
         // const point = new THREE.PointLight(0xffffff,1);
         // point.position.set(100,200,200)
@@ -55,10 +66,17 @@
         controls.addEventListener('change',() => { renderer.render(scene, camera)});
         controls.target.set(0,0,0);
         controls.update();
+        
+        const loader = new GLTFLoader();
+        const dracoLoader = new DRACOLoader();
+        dracoLoader.setDecoderConfig({type:'js'});
+        dracoLoader.setDecoderPath('https://unpkg.com/three@0.149.0/examples/jsm/libs/draco/');
+        dracoLoader.preload();
+        loader.setDRACOLoader(dracoLoader);
 
-        // load the GL object
-        const loader =new GLTFLoader();
-        loader.load('model/Whole2024.glb',function(gltf){
+        let url = "model/bake2024.glb"
+        // loader.load(url, ({scene}) => {} , xhr => {}, error => {})
+        loader.load(url,function(gltf){
             const model = gltf.scene;
             model.position.set(0,0,0);
 
@@ -68,20 +86,7 @@
             renderer.render(scene,camera);
         }, undefined,function(error){
             console.error(error);
-        });       
-        // loader.load('model/monitor.glb',function(gltf){
-        //     const model = gltf.scene;
-        //     model.position.set(0,1,0);
-
-        //     scene.add(model);
-
-        //     //render the scene
-        //     renderer.render(scene,camera);
-        // }, undefined,function(error){
-        //     console.error(error);
-        // });  
-        
-        // load the obj test
+        }); 
 
         // updata scene on window resize
         window.onresize = function() {
