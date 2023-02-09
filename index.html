@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ThreeJS Example</title>
+    <title>ThreeJS Ex02</title>
     <style>
         html,body{margin: 0}
     </style>
@@ -37,12 +37,18 @@
         camera.position.set(5,5,2.5);
 
         //nice ambient light
-        const ambientLight = new THREE.AmbientLight(0xffffff);
+        const ambientLight = new THREE.AmbientLight(0xffffff,1);
         scene.add(ambientLight);
+        
+        // //a nice point light
+        // const point = new THREE.PointLight(0xffffff,1);
+        // point.position.set(100,200,200)
+        // scene.add(point); 
 
         //a nice directional light
-        const directionalLight = new THREE.DirectionalLight(0xffffff,3);
-        scene.add(directionalLight); 
+        // const directionalLight = new THREE.DirectionalLight(0xffffff,2);
+        // directionalLight.position.set(300,300,200)
+        // scene.add(directionalLight); 
 
         // controls for orbiting
         const controls = new OrbitControls(camera, renderer.domElement);
@@ -52,7 +58,7 @@
 
         // load the GL object
         const loader =new GLTFLoader();
-        loader.load('model/chair.glb',function(gltf){
+        loader.load('model/Whole2024.glb',function(gltf){
             const model = gltf.scene;
             model.position.set(0,0,0);
 
@@ -63,17 +69,17 @@
         }, undefined,function(error){
             console.error(error);
         });       
-        loader.load('model/monitor.glb',function(gltf){
-            const model = gltf.scene;
-            model.position.set(0,1,0);
+        // loader.load('model/monitor.glb',function(gltf){
+        //     const model = gltf.scene;
+        //     model.position.set(0,1,0);
 
-            scene.add(model);
+        //     scene.add(model);
 
-            //render the scene
-            renderer.render(scene,camera);
-        }, undefined,function(error){
-            console.error(error);
-        });  
+        //     //render the scene
+        //     renderer.render(scene,camera);
+        // }, undefined,function(error){
+        //     console.error(error);
+        // });  
         
         // load the obj test
         // const mtlLoader = new MTLLoader();
